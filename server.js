@@ -3,7 +3,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
-const connectDB = require('./config/Database');
+const {connectDB} = require('./config/Database');
 const dataRoutes = require('./routes/dataRoutes');
 const authRoutes = require('./routes/authRoutes');
 const likeCommentRoutes = require('./routes/Like&CommentRoutes');
