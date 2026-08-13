@@ -1,4 +1,4 @@
-//authController.js
+//controllers/authController.js
 const mongoose = require('mongoose');
 const bcryptjs = require('bcryptjs');  // ✅ Import bcryptjs
 const jwt = require('jsonwebtoken');   // ✅ Import JWT
