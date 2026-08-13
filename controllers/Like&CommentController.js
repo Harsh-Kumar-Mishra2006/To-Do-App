@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const LikeComment = require('../models/Like&CommentModel');
 const Todo = require('../models/dataModel');
 
-// ✅ CREATE COMMENT - Fixed with todo and user reference
+//  CREATE COMMENT - Fixed with todo and user reference
 const createComment = async (req, res) => {
   try {
     const { todoId, comment } = req.body;
@@ -17,7 +17,7 @@ const createComment = async (req, res) => {
       });
     }
 
-    // ✅ Check if todo exists
+    //  Check if todo exists
     const todo = await Todo.findById(todoId);
     if (!todo) {
       return res.status(404).json({
@@ -48,7 +48,7 @@ const createComment = async (req, res) => {
   }
 };
 
-// ✅ GET ALL COMMENTS - Fixed with pagination
+//  GET ALL COMMENTS - Fixed with pagination
 const getAllComments = async (req, res) => {
   try {
     const { todoId, page = 1, limit = 10 } = req.query;
@@ -89,7 +89,7 @@ const getAllComments = async (req, res) => {
   }
 };
 
-// ✅ UPDATE COMMENT - Fixed with ownership check
+//  UPDATE COMMENT - Fixed with ownership check
 const updateComment = async (req, res) => {
   try {
     const { id } = req.params;
@@ -103,7 +103,7 @@ const updateComment = async (req, res) => {
       });
     }
 
-    // ✅ Check ownership
+    //  Check ownership
     const existingComment = await LikeComment.findOne({ _id: id, userId });
     
     if (!existingComment) {
@@ -134,13 +134,13 @@ const updateComment = async (req, res) => {
   }
 };
 
-// ✅ DELETE COMMENT - Fixed with ownership check
+//  DELETE COMMENT - Fixed with ownership check
 const deleteComment = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user.userId;
 
-    // ✅ Check ownership
+    //  Check ownership
     const comment = await LikeComment.findOne({ _id: id, userId });
     
     if (!comment) {
@@ -167,7 +167,7 @@ const deleteComment = async (req, res) => {
   }
 };
 
-// ✅ GET COMMENT BY ID - Fixed
+//  GET COMMENT BY ID - Fixed
 const getCommentById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -203,7 +203,7 @@ const getCommentById = async (req, res) => {
   }
 };
 
-// ✅ LIKE COMMENT - Fixed with proper save
+//  LIKE COMMENT - Fixed with proper save
 const likeComment = async (req, res) => {
   try {
     const { id } = req.params;
@@ -218,7 +218,7 @@ const likeComment = async (req, res) => {
       });
     }
 
-    // ✅ Check if user already liked
+    //  Check if user already liked
     const alreadyLiked = comment.likedBy.includes(userId);
     const alreadyDisliked = comment.dislikedBy.includes(userId);
 
@@ -238,7 +238,7 @@ const likeComment = async (req, res) => {
       }
     }
 
-    // ✅ Save to database
+    //  Save to database
     await comment.save();
 
     return res.status(200).json({
@@ -261,7 +261,7 @@ const likeComment = async (req, res) => {
   }
 };
 
-// ✅ DISLIKE COMMENT - Fixed with proper save
+//  DISLIKE COMMENT - Fixed with proper save
 const dislikeComment = async (req, res) => {
   try {
     const { id } = req.params;
@@ -276,7 +276,7 @@ const dislikeComment = async (req, res) => {
       });
     }
 
-    // ✅ Check if user already disliked
+    //  Check if user already disliked
     const alreadyDisliked = comment.dislikedBy.includes(userId);
     const alreadyLiked = comment.likedBy.includes(userId);
 
@@ -296,7 +296,7 @@ const dislikeComment = async (req, res) => {
       }
     }
 
-    // ✅ Save to database
+    //  Save to database
     await comment.save();
 
     return res.status(200).json({
@@ -319,7 +319,7 @@ const dislikeComment = async (req, res) => {
   }
 };
 
-// ✅ GET RESPONSES - Fixed duplicate field
+//  GET RESPONSES - Fixed duplicate field
 const getResponses = async (req, res) => {
   try {
     const { id } = req.params;
@@ -346,7 +346,7 @@ const getResponses = async (req, res) => {
         likes: comment.like,
         dislikes: comment.dislike,
         likedBy: comment.likedBy,
-        dislikedBy: comment.dislikedBy,  // ✅ Fixed duplicate
+        dislikedBy: comment.dislikedBy,  //  Fixed duplicate
         totalReactions: comment.like + comment.dislike,
       },
       message: "Responses fetched successfully"
@@ -361,7 +361,7 @@ const getResponses = async (req, res) => {
   }
 };
 
-// ✅ GET COMMENTS BY TODO - New helper function
+//  GET COMMENTS BY TODO - New helper function
 const getCommentsByTodo = async (req, res) => {
   try {
     const { todoId } = req.params;
@@ -437,6 +437,6 @@ module.exports = {
   likeComment,
   dislikeComment,
   getResponses,
-  getCommentsByTodo,  // ✅ New export
+  getCommentsByTodo,  
   searchComments
 };
