@@ -246,7 +246,7 @@ const searchTodos = async (req, res) => {
     // Build query
     const query = { author: userId };
     
-    // ✅ Text search on tasks and authorName
+    // Text search on tasks and authorName
     if (q && q.trim()) {
       query.$or = [
         { tasks: { $regex: q.trim(), $options: 'i' } },
@@ -254,17 +254,17 @@ const searchTodos = async (req, res) => {
       ];
     }
     
-    // ✅ Filter by completion status
+    // Filter by completion status
     if (status !== undefined) {
       query.isCompleted = status === 'true';
     }
     
-    // ✅ Filter by priority
+    // Filter by priority
     if (priority) {
       query.priority = priority;
     }
     
-    // ✅ Filter by date range
+    // Filter by date range
     if (fromDate || toDate) {
       query.dueDate = {};
       if (fromDate) {
