@@ -116,7 +116,7 @@ const updateComment = async (req, res) => {
     const updatedComment = await LikeComment.findByIdAndUpdate(
       id,
       { comment },
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     );
 
     return res.status(200).json({

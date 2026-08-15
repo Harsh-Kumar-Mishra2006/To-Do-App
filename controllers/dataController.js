@@ -121,7 +121,10 @@ const updatetodo = async (req, res) => {
     const updatedtodo = await Todo.findByIdAndUpdate(
       id,
       updateData,
-      { new: true, runValidators: true }
+      { 
+        returnDocument: 'after',  
+        runValidators: true 
+      }
     );
 
     return res.status(200).json({
