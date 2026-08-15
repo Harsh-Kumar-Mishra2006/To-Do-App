@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');   // ✅ Import JWT
 const auth = require('../models/authModel');
 const { authValidation } = require('../validations/validation');
 
+const JWT_SECRET = process.env.JWT_SECRET || 'mypassword';
+
 // Updated Signup with validation
 const Signup = async (req, res) => {
   try {
@@ -54,7 +56,7 @@ const Signup = async (req, res) => {
         username: createuser.username,
         role: createuser.role
       },
-      process.env.JWT_SECRET || 'mypassword',
+      JWT_SECRET,
       { expiresIn: '30d' }
     );
 
@@ -136,7 +138,7 @@ const Login = async (req, res) => {
         username: existingUser.username,
         role: existingUser.role
       },
-      process.env.JWT_SECRET || 'mypassword',
+      JWT_SECRET,
       { expiresIn: '30d' }
     );
 
@@ -190,7 +192,7 @@ const getProfile = async (req, res) => {
 
     try {
       // Verify token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'mypassword');  // ✅ Fixed
+      const decoded = jwt.verify(token, JWT_SECRET);  // ✅ Fixed
       console.log('Token verified for user:', decoded.userId);
 
       const user = await auth.findById(decoded.userId).select('-password');

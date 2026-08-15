@@ -24,6 +24,27 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Routes
+
+app.get('/',(req,res)=>{
+  res.json({
+    message: 'api is running successfully',
+    endpoints:{
+      api: '/api',
+      health: '/health'
+    }
+  })
+})
+
+app.get('/health',(req,res)=>{
+res.status(200).json({
+status:'ok',
+timestamp:new Date().toISOString(),
+envoirnment: process.env.NODE_ENV || 'development',
+database:process.env.DATABASE_URL ? 'configured' : 'not-configured'
+})
+});
+
+
 app.use('/api/todo', dataRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/likecomment', likeCommentRoutes);
