@@ -1,13 +1,12 @@
-//dataModel.js
 const mongoose = require('mongoose');
 
 const todoSchema = new mongoose.Schema({
   author: {
-    type: mongoose.Schema.Types.ObjectId,  
-    ref: 'Auth',  
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Auth',
     required: true,
   },
-  authorName: {  
+  authorName: {
     type: String,
     required: true,
     trim: true
@@ -22,21 +21,59 @@ const todoSchema = new mongoose.Schema({
       message: 'Tasks array cannot be empty'
     }
   },
-  dueDate: {  
+  dueDate: {
     type: Date,
     required: false,
   },
-  isCompleted: { 
+  isCompleted: {
     type: Boolean,
     default: false
   },
-  priority: {  
+  priority: {
     type: String,
     enum: ['low', 'medium', 'high'],
     default: 'medium'
-  }
-}, { 
+  },
+  attachments: [{
+    filename: {
+      type: String,
+      required: true
+    },
+    originalName: {
+      type: String,
+      required: true
+    },
+    size: {
+      type: Number,
+      required: true
+    },
+    mimetype: {
+      type: String,
+      required: true
+    },
+    path: {
+      type: String,
+      required: true
+    },
+    url: {
+      type: String,
+      required: true
+    },
+    uploadedAt: {
+      type: Date,
+      default: Date.now
+    },
+    optimized: {
+      type: Boolean,
+      default: false
+    }
+  }]
+}, {
   timestamps: true
 });
+
+// Add index for file queries
+todoSchema.index({ 'attachments.uploadedAt': -1 });
+todoSchema.index({ author: 1, 'attachments.uploadedAt': -1 });
 
 module.exports = mongoose.model('Todo', todoSchema);
